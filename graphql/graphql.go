@@ -19,6 +19,8 @@ var NewGraphqlSchema = func(
 		output.AuthOutputType(outputTypes),
 		output.UserOutputType(),
 		output.ListUserOutputType(outputTypes),
+		output.BrandOutputType(),
+		output.ListBrandOutputType(outputTypes),
 	} {
 		outputTypes[graphqlType.Name()] = graphqlType
 	}
@@ -34,6 +36,15 @@ var NewGraphqlSchema = func(
 				"get_user_by_id": query.GetUserByIDQueryType(
 					outputTypes,
 					repositories.UserRepository,
+				),
+				"brands": query.GetAllBrandsQueryType(
+					outputTypes,
+					db,
+					repositories.BrandRepository,
+				),
+				"get_brand_by_id": query.GetBrandByIDQueryType(
+					outputTypes,
+					repositories.BrandRepository,
 				),
 			},
 		}),

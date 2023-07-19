@@ -69,5 +69,11 @@ func (r *Router) SetupHandler() {
 			userRouter.DELETE("/:user_id", httpHandler.DeleteUserByID)
 			userRouter.PATCH("/:user_id", httpHandler.UpdateUserByID)
 		}
+
+		brandRouter := routerPermission.Group("/brands")
+		{
+			brandRouter.GET("/", httpHandler.GetAllBrands)
+			brandRouter.GET("/:brand_id", httpHandler.GetBrandByID)
+		}
 	}
 }

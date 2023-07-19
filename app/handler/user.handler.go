@@ -44,7 +44,7 @@ func (h *HTTPHandler) GetUserByID(c *gin.Context) {
 	userID, err := strconv.Atoi(c.Param("user_id"))
 	if err != nil {
 		h.SetInternalErrorResponse(c, err, map[string]interface{}{
-			"userID": "strconv.Atoi",
+			"strconv.Atoi": "strconv.Atoi",
 		})
 		return
 	}
@@ -133,7 +133,6 @@ func (h *HTTPHandler) UpdateUserByID(c *gin.Context) {
 	fmt.Println(input)
 
 	data, err := h.GetInputAsMap(c, input)
-	fmt.Println(data)
 	if err != nil {
 		h.SetInternalErrorResponse(c, err, map[string]interface{}{
 			"GetInputAsMap": "GetInputAsMap",

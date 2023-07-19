@@ -8,39 +8,39 @@ import (
 	"gorm.io/gorm"
 )
 
-type UserRepositoryInterface interface {
+type OrderRepositoryInterface interface {
 	Create(
 		ctx context.Context,
 		data map[string]interface{},
 		scopes ...func(db *gorm.DB) *gorm.DB,
-	) (model.User, error)
+	) (model.Order, error)
 	CreateWithTx(
 		tx *gorm.DB,
 		data map[string]interface{},
 		scopes ...func(db *gorm.DB) *gorm.DB,
-	) (model.User, error)
+	) (model.Order, error)
 	TakeByConditionsWithScopes(
 		ctx context.Context,
 		conditions map[string]interface{},
 		scopes ...func(db *gorm.DB) *gorm.DB,
-	) (model.User, error)
+	) (model.Order, error)
 	FindByConditionsWithScopes(
 		ctx context.Context,
 		conditions map[string]interface{},
 		scopes ...func(db *gorm.DB) *gorm.DB,
-	) ([]model.User, error)
+	) ([]model.Order, error)
 	UpdateByConditions(
 		ctx context.Context,
 		conditions map[string]interface{},
 		data map[string]interface{},
 		scopes ...func(db *gorm.DB) *gorm.DB,
-	) (model.User, error)
+	) (model.Order, error)
 	UpdateByConditionsWithTx(
 		tx *gorm.DB,
 		conditions map[string]interface{},
 		data map[string]interface{},
 		scopes ...func(db *gorm.DB) *gorm.DB,
-	) (model.User, error)
+	) (model.Order, error)
 	DeleteByConditions(
 		ctx context.Context,
 		conditions map[string]interface{},
@@ -53,109 +53,109 @@ type UserRepositoryInterface interface {
 	) error
 }
 
-type UserRepository struct {
+type OrderRepository struct {
 	DB *gorm.DB
 }
 
-func NewUserRepository(db *gorm.DB) UserRepositoryInterface {
-	return &UserRepository{db}
+func NewOrderRepository(db *gorm.DB) OrderRepositoryInterface {
+	return &OrderRepository{db}
 }
 
-func (r *UserRepository) Create(
+func (r *OrderRepository) Create(
 	ctx context.Context,
 	data map[string]interface{},
 	scopes ...func(db *gorm.DB) *gorm.DB,
-) (model.User, error) {
-	var user model.User
-	err := utils.MapToStruct(data, &user)
+) (model.Order, error) {
+	var order model.Order
+	err := utils.MapToStruct(data, &order)
 	if err != nil {
-		return user, err
+		return order, err
 	}
 
 	cdb := r.DB.WithContext(ctx)
-	err = cdb.Scopes(scopes...).Create(&user).Error
+	err = cdb.Scopes(scopes...).Create(&order).Error
 
-	return user, err
+	return order, err
 }
 
-func (r *UserRepository) CreateWithTx(
+func (r *OrderRepository) CreateWithTx(
 	tx *gorm.DB,
 	data map[string]interface{},
 	scopes ...func(db *gorm.DB) *gorm.DB,
-) (model.User, error) {
-	var user model.User
-	err := utils.MapToStruct(data, &user)
+) (model.Order, error) {
+	var order model.Order
+	err := utils.MapToStruct(data, &order)
 	if err != nil {
-		return user, err
+		return order, err
 	}
 
-	err = tx.Scopes(scopes...).Create(&user).Error
-	return user, err
+	err = tx.Scopes(scopes...).Create(&order).Error
+	return order, err
 }
 
-func (r *UserRepository) TakeByConditionsWithScopes(
+func (r *OrderRepository) TakeByConditionsWithScopes(
 	ctx context.Context,
 	conditions map[string]interface{},
 	scopes ...func(db *gorm.DB) *gorm.DB,
-) (model.User, error) {
-	var user model.User
+) (model.Order, error) {
+	var order model.Order
 	cdb := r.DB.WithContext(ctx)
-	err := cdb.Scopes(scopes...).Where(conditions).Take(&user).Error
+	err := cdb.Scopes(scopes...).Where(conditions).Take(&order).Error
 
-	return user, err
+	return order, err
 }
 
-func (r *UserRepository) FindByConditionsWithScopes(
+func (r *OrderRepository) FindByConditionsWithScopes(
 	ctx context.Context,
 	conditions map[string]interface{},
 	scopes ...func(db *gorm.DB) *gorm.DB,
-) ([]model.User, error) {
-	var users []model.User
+) ([]model.Order, error) {
+	var orders []model.Order
 	cdb := r.DB.WithContext(ctx)
-	err := cdb.Scopes(scopes...).Where(conditions).Find(&users).Error
+	err := cdb.Scopes(scopes...).Where(conditions).Find(&orders).Error
 
-	return users, err
+	return orders, err
 }
 
-func (r *UserRepository) UpdateByConditions(
+func (r *OrderRepository) UpdateByConditions(
 	ctx context.Context,
 	conditions map[string]interface{},
 	data map[string]interface{},
 	scopes ...func(db *gorm.DB) *gorm.DB,
-) (model.User, error) {
-	var user model.User
+) (model.Order, error) {
+	var order model.Order
 	cdb := r.DB.WithContext(ctx)
-	err := cdb.Model(&model.User{}).Scopes(scopes...).Where(conditions).Updates(data).First(&user).Error
+	err := cdb.Model(&model.Order{}).Scopes(scopes...).Where(conditions).Updates(data).First(&order).Error
 
-	return user, err
+	return order, err
 }
 
-func (r *UserRepository) UpdateByConditionsWithTx(
+func (r *OrderRepository) UpdateByConditionsWithTx(
 	tx *gorm.DB,
 	conditions map[string]interface{},
 	data map[string]interface{},
 	scopes ...func(db *gorm.DB) *gorm.DB,
-) (model.User, error) {
-	var user model.User
-	cdb := tx.Model(&model.User{})
-	err := cdb.Scopes(scopes...).Where(conditions).Updates(data).First(&user).Error
+) (model.Order, error) {
+	var order model.Order
+	cdb := tx.Model(&model.Order{})
+	err := cdb.Scopes(scopes...).Where(conditions).Updates(data).First(&order).Error
 
-	return user, err
+	return order, err
 }
 
-func (r *UserRepository) DeleteByConditions(
+func (r *OrderRepository) DeleteByConditions(
 	ctx context.Context,
 	conditions map[string]interface{},
 	scopes ...func(db *gorm.DB) *gorm.DB,
 ) error {
 	cdb := r.DB.WithContext(ctx)
-	return cdb.Scopes(scopes...).Where(conditions).Delete(&model.User{}).Error
+	return cdb.Scopes(scopes...).Where(conditions).Delete(&model.Order{}).Error
 }
 
-func (r *UserRepository) DeleteByConditionsWithTx(
+func (r *OrderRepository) DeleteByConditionsWithTx(
 	tx *gorm.DB,
 	conditions map[string]interface{},
 	scopes ...func(db *gorm.DB) *gorm.DB,
 ) error {
-	return tx.Scopes(scopes...).Where(conditions).Delete(&model.User{}).Error
+	return tx.Scopes(scopes...).Where(conditions).Delete(&model.Order{}).Error
 }
